@@ -1,4 +1,17 @@
 <div class="card h-100 shadow-sm">
+  @if (!imagenFallida()) {
+    <img
+      [src]="'portadas/' + libro().id + '.jpg'"
+      [alt]="'Portada de ' + libro().titulo"
+      class="card-img-top portada"
+      (error)="imagenFallida.set(true)"
+    />
+  } @else {
+    <div class="portada portada-vacia d-flex align-items-center justify-content-center">
+      📖
+    </div>
+  }
+
   <div class="card-body d-flex flex-column">
     <span class="badge text-bg-secondary align-self-start mb-2">
       {{ libro().categoria | titlecase }}

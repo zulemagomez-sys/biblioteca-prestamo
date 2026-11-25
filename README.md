@@ -1,59 +1,55 @@
-# BibliotecaPrestamos
+# Biblioteca - Sistema de Préstamo de Libros
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.7.
+Aplicación web desarrollada con Angular que permite consultar un catálogo de libros,
+registrar préstamos, revisar su historial y procesar devoluciones.
+Los datos se guardan en el navegador con IndexedDB.
 
-## Development server
+**Estudiante:** ZULEMA GOMEZ FLORES
 
-To start a local development server, run:
+## Funcionalidades
+
+- **Catálogo** (`/catalogo`): tarjetas de libros con búsqueda por título o autor y filtro por categoría.
+- **Nuevo préstamo** (`/prestamos/nuevo`): formulario reactivo con validaciones.
+- **Historial** (`/prestamos`): lista de préstamos con fecha y estado, filtrable por estado.
+- **Detalle** (`/prestamos/:id`): datos del préstamo y devolución del libro.
+
+## Reglas del negocio
+
+- No se puede prestar una cantidad mayor a las existencias disponibles.
+- Al registrar un préstamo se descuentan las unidades del libro.
+- Al devolver, se recuperan las unidades prestadas.
+- Una devolución solo puede registrarse una vez.
+- La fecha límite debe estar entre hoy y 30 días.
+
+## Requisitos
+
+- Node.js 20 o superior
+- npm
+- Angular CLI: `npm install -g @angular/cli`
+
+## Instalación y ejecución
 
 ```bash
+git clone https://github.com/zulemagomez-sys/biblioteca-prestamo.git
+cd biblioteca-prestamo
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abrir en el navegador: http://localhost:4200
 
-## Code scaffolding
+## Estructura del proyecto
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+src/app/
+├── components/libro-card/   Componente hijo reutilizable (tarjeta de libro)
+├── models/                  Interfaces Libro y Prestamo
+├── pages/                   Pantallas: catalogo, nuevo-prestamo, historial, detalle-prestamo
+├── services/biblioteca-db   Servicio de acceso a IndexedDB
+├── app.routes.ts            Configuración de rutas
+└── app.html                 Menú de navegación
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Tecnologías
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Angular, TypeScript, Bootstrap 5.3, IndexedDB

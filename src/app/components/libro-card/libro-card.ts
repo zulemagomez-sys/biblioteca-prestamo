@@ -1,4 +1,5 @@
-import { Component, input, output } from '@angular/core';
+
+import { Component, input, output, signal } from '@angular/core';
 import { NgClass, TitleCasePipe } from '@angular/common';
 import { Libro } from '../../models/libro';
 
@@ -9,11 +10,11 @@ import { Libro } from '../../models/libro';
   styleUrl: './libro-card.css',
 })
 export class LibroCard {
-  // Padre -> hijo: el catálogo le pasa el libro
   libro = input.required<Libro>();
-
-  // Hijo -> padre: avisa que el usuario quiere prestar este libro
   prestar = output<Libro>();
+
+  // Se activa si la imagen no existe o falla al cargar
+  imagenFallida = signal(false);
 
   claseStock(): string {
     const n = this.libro().existencias;
