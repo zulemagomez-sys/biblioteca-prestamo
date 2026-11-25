@@ -1,1 +1,84 @@
-<p>detalle-prestamo works!</p>
+@if (cargando()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+} @else if (noEncontrado()) {
+  <div class="alert alert-warning">
+    <h4 class="alert-heading">Préstamo no encontrado</h4>
+    <p class="mb-3">El préstamo que buscas no existe o el identificador no es válido.</p>
+    <a routerLink="/prestamos" class="btn btn-primary">← Volver al historial</a>
+  </div>
+} @else if (prestamo(); as p) {
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3 gap-2">
+    <h2 class="mb-0">Préstamo #{{ p.id }}</h2>
+    <span
+      class="badge fs-6"
+      [ngClass]="p.estado === 'Activo' ? 'text-bg-warning' : 'text-bg-success'"
+    >
+      {{ p.estado }}
+    </span>
+  </div>
+
+  @if (mensajeExito()) {
+    <div class="alert alert-success">{{ mensajeExito() }}</div>
+  }
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-sm-4">Libro</dt>
+        <dd class="col-sm-8">{{ p.libroTitulo }}</dd>
+
+        <dt class="col-sm-4">Solicitante</dt>
+        <dd class="col-sm-8">{{ p.solicitante | titlecase }}</dd>
+
+        <dt class="col-sm-4">Cantidad prestada</dt>
+        <dd class="col-sm-8">{{ p.cantidad }}</dd>
+
+        <dt class="col-sm-4">Fecha de préstamo</dt>
+        <dd class="col-sm-8">{{ p.fechaPrestamo | date: 'dd/MM/yyyy HH:mm' }}</dd>
+
+        <dt class="col-sm-4">Fecha límite</dt>
+        <dd class="col-sm-8" [ngClass]="{ 'text-danger fw-bold': vencido(p) }">
+          {{ p.fechaLimite | date: 'dd/MM/yyyy' }}
+          @if (vencido(p)) {
+            <span class="badge text-bg-danger ms-1">Vencido</span>
+          }
+        </dd>
+
+        @if (p.fechaDevolucion) {
+          <dt class="col-sm-4">Fecha de devolución</dt>
+          <dd class="col-sm-8">{{ p.fechaDevolucion | date: 'dd/MM/yyyy HH:mm' }}</dd>
+        }
+
+        @if (libro(); as l) {
+          <dt class="col-sm-4">Existencias actuales</dt>
+          <dd class="col-sm-8 mb-0">
+            <span class="badge text-bg-info">{{ l.existencias }} disponible(s)</span>
+          </dd>
+        }
+      </dl>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column flex-sm-row gap-2">
+    @if (p.estado === 'Activo') {
+      <button
+        type="button"
+        class="btn btn-success"
+        [disabled]="procesando()"
+        (click)="devolver()"
+      >
+        @if (procesando()) { Procesando... } @else { Registrar devolución }
+      </button>
+    } @else {
+      <button type="button" class="btn btn-secondary" disabled>
+        Devolución ya registrada
+      </button>
+    }
+    <a routerLink="/prestamos" class="btn btn-outline-secondary">← Volver al historial</a>
+  </div>
+}
