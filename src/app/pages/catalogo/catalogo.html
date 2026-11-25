@@ -1,1 +1,56 @@
-<p>catalogo works!</p>
+<h2 class="mb-4">Catálogo de libros</h2>
+
+<div class="row g-2 mb-4">
+  <div class="col-12 col-md-7">
+    <input
+      #txt
+      type="search"
+      class="form-control"
+      placeholder="Buscar por título o autor..."
+      [value]="busqueda()"
+      (input)="busqueda.set(txt.value)"
+    />
+  </div>
+
+  <div class="col-8 col-md-3">
+    <select
+      #sel
+      class="form-select"
+      [value]="categoria()"
+      (change)="categoria.set(sel.value)"
+    >
+      <option value="">Todas las categorías</option>
+      @for (c of categorias(); track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="col-4 col-md-2">
+    <button type="button" class="btn btn-outline-secondary w-100" (click)="limpiar()">
+      Limpiar
+    </button>
+  </div>
+</div>
+
+@if (cargando()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+} @else {
+  <p class="text-muted">{{ filtrados().length }} libro(s) encontrado(s)</p>
+
+  <div class="row g-3">
+    @for (libro of filtrados(); track libro.id) {
+      <div class="col-12 col-sm-6 col-lg-4">
+        <app-libro-card [libro]="libro" (prestar)="irAPrestar($event)" />
+      </div>
+    } @empty {
+      <div class="col-12">
+        <div class="alert alert-info">
+          No se encontraron libros con esos criterios.
+        </div>
+      </div>
+    }
+  </div>
+}

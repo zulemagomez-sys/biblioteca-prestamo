@@ -1,0 +1,29 @@
+<div class="card h-100 shadow-sm">
+  <div class="card-body d-flex flex-column">
+    <span class="badge text-bg-secondary align-self-start mb-2">
+      {{ libro().categoria | titlecase }}
+    </span>
+
+    <h5 class="card-title">{{ libro().titulo }}</h5>
+    <p class="text-muted mb-3">{{ libro().autor }}</p>
+
+    <div class="mt-auto">
+      <span class="badge mb-3" [ngClass]="claseStock()">
+        @if (libro().existencias > 0) {
+          {{ libro().existencias }} disponible(s)
+        } @else {
+          Agotado
+        }
+      </span>
+
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        [disabled]="libro().existencias === 0"
+        (click)="prestar.emit(libro())"
+      >
+        Prestar
+      </button>
+    </div>
+  </div>
+</div>
