@@ -1,3 +1,15 @@
-import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { Routes } from '@angular/router';
+import { Catalogo } from './pages/catalogo/catalogo';
+import { NuevoPrestamo } from './pages/nuevo-prestamo/nuevo-prestamo';
+import { Historial } from './pages/historial/historial';
+import { DetallePrestamo } from './pages/detalle-prestamo/detalle-prestamo';
+
+export const routes: Routes = [
+  { path: '', redirectTo: 'catalogo', pathMatch: 'full' },
+  { path: 'catalogo', component: Catalogo },
+  { path: 'prestamos/nuevo', component: NuevoPrestamo },
+  { path: 'prestamos', component: Historial },
+  { path: 'prestamos/:id', component: DetallePrestamo },
+  { path: '**', redirectTo: 'catalogo' },
+];
