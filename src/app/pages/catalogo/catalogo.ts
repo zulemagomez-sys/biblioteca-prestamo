@@ -1,12 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { BibliotecaDb } from '../../services/biblioteca-db';
 import { Libro } from '../../models/libro';
 import { LibroCard } from '../../components/libro-card/libro-card';
 
 @Component({
   selector: 'app-catalogo',
-  imports: [LibroCard],
+  imports: [LibroCard, RouterLink],
   templateUrl: './catalogo.html',
   styleUrl: './catalogo.css',
 })
@@ -18,12 +18,13 @@ export class Catalogo {
   busqueda = signal('');
   categoria = signal('');
   cargando = signal(true);
+  mensaje = signal('');
+  error = signal('');
 
   categorias = computed(() =>
     [...new Set(this.libros().map((l) => l.categoria))].sort(),
   );
 
-  // Búsqueda y filtro funcionan juntos: un libro debe cumplir ambos
   filtrados = computed(() => {
     const texto = this.normalizar(this.busqueda());
     const cat = this.categoria();
@@ -55,6 +56,24 @@ export class Catalogo {
 
   irAPrestar(libro: Libro) {
     this.router.navigate(['/prestamos/nuevo'], { queryParams: { libroId: libro.id } });
+  }
+
+  irAEditar(libro: Libro) {
+    this.router.navigate(['/libros', libro.id, 'editar']);
+  }
+
+  async eliminar(libro: Libro) {
+    this.mensaje.set('');
+    this.error.set('');
+    if (!confirm(`¿Eliminar «${libro.titulo}» del catálogo?`)) return;
+
+    try {
+      await this.db.eliminarLibro(libro.id);
+      this.libros.set(await this.db.obtenerLibros());
+      this.mensaje.set(`Se eliminó «${libro.titulo}» del catálogo.`);
+    } catch (e) {
+      this.error.set((e as Error).message);
+    }
   }
 
   limpiar() {

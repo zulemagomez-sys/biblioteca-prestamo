@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
   <div class="container">
-    <a class="navbar-brand fw-bold" routerLink="/catalogo">Biblioteca</a>
-
+    
+<a class="navbar-brand fw-bold" routerLink="/catalogo">
+  <i class="bi bi-book-half me-2"></i>Biblioteca
+</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -17,22 +19,25 @@
     <div class="collapse navbar-collapse" id="menuPrincipal">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/catalogo" routerLinkActive="active">Catálogo</a>
+          <a class="nav-link" routerLink="/catalogo" routerLinkActive="active">
+  <i class="bi bi-grid me-1"></i>Catálogo
+</a>
+          
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/prestamos/nuevo" routerLinkActive="active">
-            Nuevo préstamo
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLink="/prestamos"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            Historial
-          </a>
+         <a class="nav-link" routerLink="/prestamos/nuevo" routerLinkActive="active">
+  <i class="bi bi-plus-circle me-1"></i>Nuevo préstamo
+</a>
+</li>
+<li class="nav-item">
+  <a
+    class="nav-link"
+    routerLink="/prestamos"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <i class="bi bi-clock-history me-1"></i>Historial
+  </a>
         </li>
       </ul>
     </div>

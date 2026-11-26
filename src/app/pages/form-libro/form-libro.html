@@ -1,0 +1,146 @@
+@if (cargando()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+} @else if (noEncontrado()) {
+  <div class="alert alert-warning">
+    <h4 class="alert-heading">Libro no encontrado</h4>
+    <p class="mb-3">El libro que intentas editar no existe.</p>
+    <a routerLink="/catalogo" class="btn btn-primary">← Volver al catálogo</a>
+  </div>
+} @else {
+  <h2 class="mb-4">{{ idEdicion !== null ? 'Modificar libro' : 'Agregar libro' }}</h2>
+
+  @if (errorGeneral()) {
+    <div class="alert alert-danger">{{ errorGeneral() }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate class="card card-body shadow-sm">
+    <div class="mb-3">
+      <label for="titulo" class="form-label">Título</label>
+      <input
+        id="titulo"
+        type="text"
+        class="form-control"
+        formControlName="titulo"
+        [class.is-invalid]="f.titulo.invalid && f.titulo.touched"
+      />
+      @if (f.titulo.invalid && f.titulo.touched) {
+        <div class="invalid-feedback">
+          @if (f.titulo.errors?.['required']) {
+            El título es obligatorio.
+          } @else if (f.titulo.errors?.['minlength']) {
+            Escribe al menos 2 caracteres.
+          } @else if (f.titulo.errors?.['maxlength']) {
+            Máximo 100 caracteres.
+          }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="autor" class="form-label">Autor</label>
+      <input
+        id="autor"
+        type="text"
+        class="form-control"
+        formControlName="autor"
+        [class.is-invalid]="f.autor.invalid && f.autor.touched"
+      />
+      @if (f.autor.invalid && f.autor.touched) {
+        <div class="invalid-feedback">
+          @if (f.autor.errors?.['required']) {
+            El autor es obligatorio.
+          } @else if (f.autor.errors?.['minlength']) {
+            Escribe al menos 3 caracteres.
+          } @else if (f.autor.errors?.['maxlength']) {
+            Máximo 80 caracteres.
+          }
+        </div>
+      }
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6 mb-3">
+        <label for="categoria" class="form-label">Categoría</label>
+        <input
+          id="categoria"
+          type="text"
+          class="form-control"
+          formControlName="categoria"
+          list="listaCategorias"
+          placeholder="Elige o escribe una nueva"
+          [class.is-invalid]="f.categoria.invalid && f.categoria.touched"
+        />
+        <datalist id="listaCategorias">
+          @for (c of categorias(); track c) {
+            <option [value]="c"></option>
+          }
+        </datalist>
+        @if (f.categoria.invalid && f.categoria.touched) {
+          <div class="invalid-feedback">
+            @if (f.categoria.errors?.['required']) {
+              La categoría es obligatoria.
+            } @else if (f.categoria.errors?.['minlength']) {
+              Escribe al menos 3 caracteres.
+            } @else if (f.categoria.errors?.['maxlength']) {
+              Máximo 30 caracteres.
+            }
+          </div>
+        }
+      </div>
+
+      <div class="col-12 col-md-6 mb-3">
+        <label for="existencias" class="form-label">Existencias</label>
+        <input
+          id="existencias"
+          type="number"
+          min="0"
+          class="form-control"
+          formControlName="existencias"
+          [class.is-invalid]="f.existencias.invalid && f.existencias.touched"
+        />
+        @if (f.existencias.invalid && f.existencias.touched) {
+          <div class="invalid-feedback">
+            @if (f.existencias.errors?.['required']) {
+              Las existencias son obligatorias.
+            } @else {
+              Ingresa un número entero entre 0 y 999.
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="portada" class="form-label">Portada (opcional)</label>
+      <input
+        id="portada"
+        type="file"
+        accept="image/*"
+        class="form-control"
+        [class.is-invalid]="errorImagen()"
+        (change)="onArchivo($event)"
+      />
+      @if (errorImagen()) {
+        <div class="invalid-feedback">{{ errorImagen() }}</div>
+      }
+
+      @if (portada(); as src) {
+        <div class="mt-2 d-flex align-items-end gap-3">
+          <img [src]="src" alt="Vista previa de la portada" class="rounded border" style="max-height: 160px" />
+          <button type="button" class="btn btn-sm btn-outline-danger" (click)="quitarPortada()">
+            Quitar portada
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row gap-2">
+      <button type="submit" class="btn btn-primary" [disabled]="guardando()">
+        @if (guardando()) { Guardando... } @else { {{ idEdicion !== null ? 'Guardar cambios' : 'Agregar libro' }} }
+      </button>
+      <a routerLink="/catalogo" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+  </form>
+}

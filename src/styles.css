@@ -1,1 +1,217 @@
 /* You can add global styles to this file, and also import other style files */
+/* Tarjeta */
+
+.card {
+  position: relative;
+  border: none;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* Portada */
+.portada {
+  height: 260px;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .portada {
+  transform: scale(1.05);
+}
+
+.portada-vacia {
+  background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+}
+
+/* Categoría: etiqueta flotante sobre la portada */
+.card-body > .badge.align-self-start {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  margin: 0 !important;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(4px);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenido */
+.card-body {
+  padding: 1.25rem;
+  background: #fff;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #1f2937;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-body .text-muted {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #6b7280 !important;
+}
+
+/* Badge de stock */
+.mt-auto > .badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+/* Botón principal */
+.btn-primary {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  background: #d1d5db;
+  opacity: 1;
+}
+
+/* Botones secundarios */
+.btn-sm {
+  border-radius: 0.6rem;
+  font-weight: 500;
+}
+body {
+  background-color: #aeaedb;
+  color: #f9fafb;
+  min-height: 100vh;
+}/* Barra superior */
+.navbar {
+  background: rgba(15, 15, 16, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #27272a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  padding: 0.9rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Marca con degradado */
+.navbar-brand {
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #818cf8, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Enlaces tipo píldora */
+.navbar .nav-link {
+  color: #d1d5db !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: 999px;
+  margin-left: 0.25rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff !important;
+}
+
+/* Enlace activo */
+.navbar .nav-link.active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Botón del menú en móvil */
+.navbar-toggler {
+  border-color: #3f3f46;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.35);
+}
+
+/* En móvil, enlaces apilados con separación */
+@media (max-width: 767.98px) {
+  .navbar-nav {
+    padding-top: 0.75rem;
+    gap: 0.25rem;
+  }
+
+  .navbar .nav-link {
+    margin-left: 0;
+  }
+}
+/* Texto negro dentro de las tarjetas y formularios */
+.card,
+.card-body,
+.card .form-label,
+.card label {
+  color: #111111;
+}
+
+/* Campos claros con texto negro */
+.card .form-control,
+.card .form-select {
+  background-color: #ffffff;
+  color: #111111;
+  border: 1px solid #d1d5db;
+}
+
+.card .form-control::placeholder {
+  color: #6b7280;
+}
+
+.card .form-control:focus,
+.card .form-select:focus {
+  background-color: #ffffff;
+  color: #111111;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+/* Mensajes de error se mantienen en rojo */
+.card .invalid-feedback {
+  color: #dc2626;
+}
+
+/* Botón "Cancelar" legible sobre fondo blanco */
+.card .btn-outline-secondary {
+  color: #374151;
+  border-color: #9ca3af;
+}
+
+.card .btn-outline-secondary:hover {
+  background: #374151;
+  color: #ffffff;
+}

@@ -152,4 +152,60 @@ export class BibliotecaDb {
 
     await this.terminar(tx);
   }
+    // ---------- CRUD de libros ----------
+
+  private mismoLibro(a: { titulo: string; autor: string }, b: { titulo: string; autor: string }) {
+    const n = (t: string) => t.trim().toLowerCase();
+    return n(a.titulo) === n(b.titulo) && n(a.autor) === n(b.autor);
+  }
+
+  async agregarLibro(datos: Omit<Libro, 'id'>): Promise<number> {
+    const db = await this.abrir();
+    const tx = db.transaction('libros', 'readwrite');
+    const store = tx.objectStore('libros');
+
+    const todos = await this.pedir<Libro[]>(store.getAll());
+    if (todos.some((l) => this.mismoLibro(l, datos))) {
+      tx.abort();
+      throw new Error('Ya existe un libro con ese título y autor.');
+    }
+
+    const id = todos.reduce((max, l) => Math.max(max, l.id), 0) + 1;
+    store.add({ ...datos, id });
+    await this.terminar(tx);
+    return id;
+  }
+
+  async actualizarLibro(libro: Libro): Promise<void> {
+    const db = await this.abrir();
+    const tx = db.transaction('libros', 'readwrite');
+    const store = tx.objectStore('libros');
+
+    const todos = await this.pedir<Libro[]>(store.getAll());
+    if (!todos.some((l) => l.id === libro.id)) {
+      tx.abort();
+      throw new Error('El libro que intentas modificar no existe.');
+    }
+    if (todos.some((l) => l.id !== libro.id && this.mismoLibro(l, libro))) {
+      tx.abort();
+      throw new Error('Ya existe otro libro con ese título y autor.');
+    }
+
+    store.put(libro);
+    await this.terminar(tx);
+  }
+
+  async eliminarLibro(id: number): Promise<void> {
+    const db = await this.abrir();
+    const tx = db.transaction(['libros', 'prestamos'], 'readwrite');
+
+    const prestamos = await this.pedir<Prestamo[]>(tx.objectStore('prestamos').getAll());
+    if (prestamos.some((p) => p.libroId === id && p.estado === 'Activo')) {
+      tx.abort();
+      throw new Error('No se puede eliminar: el libro tiene préstamos activos sin devolver.');
+    }
+
+    tx.objectStore('libros').delete(id);
+    await this.terminar(tx);
+  }
 }

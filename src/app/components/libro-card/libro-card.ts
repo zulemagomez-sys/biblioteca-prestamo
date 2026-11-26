@@ -13,13 +13,13 @@ export class LibroCard {
   libro = input.required<Libro>();
   prestar = output<Libro>();
 
-  // Se activa si la imagen no existe o falla al cargar
+  editar = output<Libro>();
+  eliminar = output<Libro>();
+
   imagenFallida = signal(false);
 
-  claseStock(): string {
-    const n = this.libro().existencias;
-    if (n === 0) return 'text-bg-danger';
-    if (n <= 2) return 'text-bg-warning';
-    return 'text-bg-success';
-  }
+ claseStock(): string {
+  return 'text-bg-dark';
+}
+   
 }

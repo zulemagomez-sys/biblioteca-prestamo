@@ -1,0 +1,43 @@
+/* Texto negro dentro de las tarjetas y formularios */
+.card,
+.card-body,
+.card .form-label,
+.card label {
+  color: #111111;
+}
+
+/* Campos claros con texto negro */
+.card .form-control,
+.card .form-select {
+  background-color: #ffffff;
+  color: #111111;
+  border: 1px solid #d1d5db;
+}
+
+.card .form-control::placeholder {
+  color: #6b7280;
+}
+
+.card .form-control:focus,
+.card .form-select:focus {
+  background-color: #ffffff;
+  color: #111111;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+/* Mensajes de error se mantienen en rojo */
+.card .invalid-feedback {
+  color: #dc2626;
+}
+
+/* Botón "Cancelar" legible sobre fondo blanco */
+.card .btn-outline-secondary {
+  color: #374151;
+  border-color: #9ca3af;
+}
+
+.card .btn-outline-secondary:hover {
+  background: #374151;
+  color: #ffffff;
+}
